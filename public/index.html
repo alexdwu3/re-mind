@@ -13,12 +13,21 @@
         <div class="section">
             <h3>Add a Habit:</h3>
             <input type="text" id="habit-name" placeholder="Habit name">
+            <select id="group-name"></select> <!-- Dropdown for selecting group -->
             <button onclick="saveHabit()">Save Habit</button>
         </div>
 
         <div class="section">
             <h3>Your Habits:</h3>
             <div id="habit-list"></div>
+        </div>
+
+        <div class="section">
+            <h3>Manage Groups:</h3>
+            <input type="text" id="new-group-name" placeholder="New group name">
+            <select id="new-group-members" multiple></select> <!-- Multi-select dropdown for members -->
+            <button onclick="createGroup()">Create Group</button>
+            <div id="group-list"></div>
         </div>
     </div>
 
@@ -31,6 +40,17 @@
             <input type="number" id="edit-habit-frequency" placeholder="Frequency (days)">
             <input type="text" id="edit-habit-group" placeholder="Group name">
             <button onclick="updateHabit()">Update Habit</button>
+        </div>
+    </div>
+
+    <!-- Edit Group Modal -->
+    <div id="edit-group-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeGroupModal()">&times;</span>
+            <h3>Edit Group</h3>
+            <input type="text" id="edit-group-name" placeholder="Group name">
+            <select id="edit-group-members" multiple></select> <!-- Multi-select dropdown for members -->
+            <button onclick="updateGroup()">Update Group</button>
         </div>
     </div>
 </body>
