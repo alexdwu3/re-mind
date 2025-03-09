@@ -62,6 +62,7 @@ button:hover {
 }
 
 #new-user {
+    margin-top: -5px;
     color: grey; 
     font-size: smaller;
 }
