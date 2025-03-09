@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Habit Tracker</title>
+    <script type="module" src="script.js"></script>
+</head>
+<body>
+    <h1>Habit Tracker</h1>
+    <h3>Add a Habit:</h3>
+    <input type="text" id="habit-name" placeholder="Habit name">
+    <button onclick="saveHabit()">Save Habit</button>
+
+    <h3>Mark Habit as Done:</h3>
+    <input type="text" id="habit-id" placeholder="Habit ID">
+    <button onclick="completeHabit()">Mark as Done</button>
+
+    <h3>Your Habits:</h3>
+    <div id="habit-list"></div>
+</body>
+</html>
