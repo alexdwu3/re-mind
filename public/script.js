@@ -29,7 +29,9 @@ async function saveHabit() {
     alert("Habit saved!");
 }
 
-async function completeHabit(habitId) {
+// Function to Mark a Habit as Done
+async function completeHabit() {
+    const habitId = document.getElementById("habit-id").value; // Get habit ID from input field
     console.log("🟢 completeHabit called with habitId:", habitId); // Ensure function is being called
 
     if (!habitId || typeof habitId !== "string") {
@@ -62,7 +64,7 @@ async function completeHabit(habitId) {
     }
 }
 
-
+// Function to Fetch and Display Habits
 async function loadHabits() {
     const habitList = document.getElementById("habit-list");
     habitList.innerHTML = "";
@@ -79,14 +81,11 @@ async function loadHabits() {
             <p>
                 <strong>${habit.name}</strong> (ID: ${habitId})<br>
                 Last Done: ${habit.lastCompleted?.toDate() || "Never"}<br>
-                <button onclick="completeHabit('${habitId}')">Mark Done</button>
+                <button onclick="completeHabit('${habitId}')">Mark Done</button> <!-- ✅ Pass habitId here -->
             </p>
         `;
     });
 }
-
-
-
 
 // Load habits on page load
 window.onload = loadHabits;
