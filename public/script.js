@@ -29,37 +29,24 @@ async function saveHabit() {
     alert("Habit saved!");
 }
 
-// Function to Mark a Habit as Done
-async function completeHabit() {
-    const habitId = document.getElementById("habit-id").value; // Get habit ID from input field
-    console.log("🟢 completeHabit called with habitId:", habitId); // Ensure function is being called
-
-    if (!habitId || typeof habitId !== "string") {
-        console.error("❌ Invalid habit ID provided:", habitId);
+async function completeHabit(habitId) {
+    console.log("🟢 completeHabit called with habitId:", habitId);
+    
+    if (!habitId) {
+        console.error("❌ Invalid habit ID!");
         alert("Invalid habit ID.");
         return;
     }
 
     try {
         const habitRef = doc(db, "habits", habitId);
-        console.log("🔵 Updating Firestore habit document:", habitId);
-
-        const docSnap = await getDoc(habitRef);
-        if (!docSnap.exists()) {
-            console.error("❌ No document found in Firestore with ID:", habitId);
-            alert("Habit not found in database!");
-            return;
-        }
-
-        await updateDoc(habitRef, {
-            lastCompleted: Timestamp.now()
-        });
+        await updateDoc(habitRef, { lastCompleted: Timestamp.now() });
 
         console.log("✅ Firestore update successful!");
         alert("Habit marked as done!");
-        loadHabits(); // Refresh the habit list
+        loadHabits(); // Refresh UI after update
     } catch (error) {
-        console.error("🔥 Error updating habit:", error); // Log the actual error
+        console.error("🔥 Error updating habit:", error);
         alert("Error updating habit: " + error.message);
     }
 }
