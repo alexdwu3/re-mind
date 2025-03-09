@@ -214,7 +214,7 @@ async function loadGroups() {
 }
 
 // Function to open the edit group modal
-function openEditGroupModal(groupId, groupName, groupMembers) {
+async function openEditGroupModal(groupId, groupName, groupMembers) {
     document.getElementById('edit-group-name').value = groupName;
     const membersArray = groupMembers.split(',').map(member => member.trim());
     const editGroupMembersSelect = document.getElementById('edit-group-members');
