@@ -2,19 +2,24 @@
 <html lang="en">
 <head>
     <title>Habit Tracker</title>
+    <link rel="stylesheet" href="styles.css">
     <script type="module" src="script.js"></script>
 </head>
 <body>
-    <h1>Habit Tracker</h1>
-    <h3>Add a Habit:</h3>
-    <input type="text" id="habit-name" placeholder="Habit name">
-    <button onclick="saveHabit()">Save Habit</button>
+    <div class="container">
+        <h1 id="page-title">re/mind</h1>
+        <h2 id="user-name"></h2> <!-- New h2 element to display the username -->
 
-    <h3>Mark Habit as Done:</h3>
-    <input type="text" id="habit-id" placeholder="Habit ID">
-    <button onclick="completeHabit()">Mark as Done</button>
+        <div class="section">
+            <h3>Add a Habit:</h3>
+            <input type="text" id="habit-name" placeholder="Habit name">
+            <button onclick="saveHabit()">Save Habit</button>
+        </div>
 
-    <h3>Your Habits:</h3>
-    <div id="habit-list"></div>
+        <div class="section">
+            <h3>Your Habits:</h3>
+            <div id="habit-list"></div>
+        </div>
+    </div>
 </body>
 </html>

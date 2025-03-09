@@ -17,16 +17,31 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
+// Check for username and set page title and username display
+const username = localStorage.getItem('username');
+if (!username) {
+    window.location.href = 'login.html';
+} else {
+    document.title = `re/mind: ${username}`;
+    document.getElementById('user-name').innerText = `for: ${username}`;
+}
+
 // Function to Save a New Habit
 async function saveHabit() {
     const habitName = document.getElementById("habit-name").value;
+    if (!username) {
+        alert('No username found. Please log in again.');
+        window.location.href = 'login.html';
+        return;
+    }
     await addDoc(collection(db, "habits"), {
         name: habitName,
         frequency: 1,  // Daily by default
-        group: ["username1", "username2"],
+        group: [username],
         lastCompleted: null
     });    
     alert("Habit saved!");
+    loadHabits(); // Refresh UI after saving
 }
 
 async function completeHabit(habitId) {
@@ -51,26 +66,33 @@ async function completeHabit(habitId) {
     }
 }
 
-// Function to Fetch and Display Habits
 async function loadHabits() {
     const habitList = document.getElementById("habit-list");
     habitList.innerHTML = "";
+
+    if (!username) {
+        alert('No username found. Please log in again.');
+        window.location.href = 'login.html';
+        return;
+    }
 
     const querySnapshot = await getDocs(collection(db, "habits"));
     querySnapshot.forEach((docSnap) => {
         const habit = docSnap.data();
         const habitId = docSnap.id; // Get Firestore document ID
 
-        console.log("📌 Adding Habit to UI:", habit.name, "| Firestore ID:", habitId);
+        if (habit.group.includes(username)) {
+            console.log("📌 Adding Habit to UI:", habit.name, "| Firestore ID:", habitId);
 
-        // Ensure habitId is correctly inserted
-        habitList.innerHTML += `
-            <p>
-                <strong>${habit.name}</strong> (ID: ${habitId})<br>
-                Last Done: ${habit.lastCompleted?.toDate() || "Never"}<br>
-                <button onclick="completeHabit('${habitId}')">Mark Done</button> <!-- ✅ Pass habitId here -->
-            </p>
-        `;
+            // Ensure habitId is correctly inserted
+            habitList.innerHTML += `
+                <p>
+                    <strong>${habit.name}</strong><br>
+                    Last Done: ${habit.lastCompleted?.toDate() || "Never"}<br>
+                    <button onclick="completeHabit('${habitId}')">Mark Done</button> <!-- ✅ Pass habitId here -->
+                </p>
+            `;
+        }
     });
 }
 
