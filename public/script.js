@@ -88,12 +88,54 @@ async function loadHabits() {
             habitList.innerHTML += `
                 <p>
                     <strong>${habit.name}</strong><br>
+                    Complete every ${habit.frequency} days<br>
+                    Group: ${habit.group.join(", ")}<br>
                     Last Done: ${habit.lastCompleted?.toDate() || "Never"}<br>
-                    <button onclick="completeHabit('${habitId}')">Mark Done</button> <!-- ✅ Pass habitId here -->
+                    <button onclick="completeHabit('${habitId}')">Mark Done</button>
+                    <button onclick="openEditModal('${habitId}', '${habit.name}', ${habit.frequency}, '${habit.group.join(", ")}')">Edit</button>
                 </p>
             `;
         }
     });
+}
+
+// Function to open the edit modal
+function openEditModal(habitId, habitName, habitFrequency, habitGroup) {
+    document.getElementById('edit-habit-name').value = habitName;
+    document.getElementById('edit-habit-frequency').value = habitFrequency;
+    document.getElementById('edit-habit-group').value = habitGroup;
+    document.getElementById('edit-modal').style.display = 'block';
+    document.getElementById('edit-modal').dataset.habitId = habitId;
+}
+
+// Function to close the edit modal
+function closeModal() {
+    document.getElementById('edit-modal').style.display = 'none';
+}
+
+// Function to update the habit
+async function updateHabit() {
+    const habitId = document.getElementById('edit-modal').dataset.habitId;
+    const habitName = document.getElementById('edit-habit-name').value;
+    const habitFrequency = parseInt(document.getElementById('edit-habit-frequency').value);
+    const habitGroup = document.getElementById('edit-habit-group').value.split(',').map(item => item.trim());
+
+    try {
+        const habitRef = doc(db, "habits", habitId);
+        await updateDoc(habitRef, {
+            name: habitName,
+            frequency: habitFrequency,
+            group: habitGroup
+        });
+
+        console.log("✅ Firestore update successful!");
+        alert("Habit updated!");
+        closeModal();
+        loadHabits(); // Refresh UI after update
+    } catch (error) {
+        console.error("🔥 Error updating habit:", error);
+        alert("Error updating habit: " + error.message);
+    }
 }
 
 // Load habits on page load
@@ -103,3 +145,6 @@ window.onload = loadHabits;
 window.completeHabit = completeHabit;
 window.saveHabit = saveHabit;
 window.loadHabits = loadHabits;
+window.openEditModal = openEditModal;
+window.closeModal = closeModal;
+window.updateHabit = updateHabit;
